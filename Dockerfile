@@ -23,10 +23,17 @@ RUN apk add \
 RUN perl -MCPAN -e 'install URI::Encode' \
         rm -fr /root/.cpan /root/.cpanm
 
-RUN rm /etc/raddb/sites-enabled/inner-tunnel
-RUN rm /etc/raddb/sites-enabled/default
-RUN rm /etc/raddb/mods-enabled/eap
-RUN echo DEFAULT Auth-Type := Perl >> /etc/raddb/users
+# Generic cleanup
+RUN rm -fr "$(find /usr/local/lib/perl5 -type f -name "*.pod")" \
+        /usr/local/share/man /usr/local/share/doc \
+        /var/cache/apk/* /tmp/* \
+        /usr/share/man/* /usr/share/doc/* \
+        /usr/share/locale/* /usr/share/info/*
+
+RUN rm /etc/raddb/sites-enabled/inner-tunnel \
+    /etc/raddb/sites-enabled/default \
+    /etc/raddb/mods-enabled/eap \
+    echo "DEFAULT Auth-Type := Perl" >> /etc/raddb/users
 
 EXPOSE 1812/udp
 EXPOSE 1813/udp
@@ -34,4 +41,5 @@ EXPOSE 1812/tcp
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD [ "radiusd" ]
+
 
