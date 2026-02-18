@@ -20,7 +20,8 @@ RUN apk add \
         perl-module-build \
         freeradius-utils
         
-RUN perl -MCPAN -e 'install URI::Encode'   
+RUN perl -MCPAN -e 'install URI::Encode' \
+        rm -fr /root/.cpan /root/.cpanm
 
 RUN rm /etc/raddb/sites-enabled/inner-tunnel
 RUN rm /etc/raddb/sites-enabled/default
@@ -33,3 +34,4 @@ EXPOSE 1812/tcp
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD [ "radiusd" ]
+
