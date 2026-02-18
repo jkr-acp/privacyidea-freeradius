@@ -21,7 +21,7 @@ RUN apk add \
         freeradius-utils
         
 RUN perl -MCPAN -e 'install URI::Encode' \
-        rm -fr /root/.cpan /root/.cpanm
+        && rm -fr /root/.cpan /root/.cpanm
 
 # Generic cleanup
 RUN rm -fr "$(find /usr/local/lib/perl5 -type f -name "*.pod")" \
@@ -41,5 +41,6 @@ EXPOSE 1812/tcp
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD [ "radiusd" ]
+
 
 
